@@ -16,6 +16,26 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// ログイン
+// TODO エラーメッセージ改案
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).send("ユーザが見つかりません");
+    }
+
+    const validPassword = req.body.password === user.password; // TODO! to hash
+    if (!validPassword) {
+      return res.status(404).json("パスワードが違います");
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json(err);
+  }
+});
+
 // router.get("/", (req, res) => {
 //   res.send("auth router");
 // });
