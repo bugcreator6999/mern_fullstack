@@ -33,6 +33,15 @@ router.delete("/:id", async (req, res) => {
 });
 
 // ユーザ情報の取得
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { password, updatedAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (error) {
+    return res.status(500).json(err);
+  }
+});
 
 // router.get("/", (req, res) => {
 //   res.send("users router");
