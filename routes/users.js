@@ -19,6 +19,19 @@ router.put("/:id", async (req, res) => {
 });
 
 // ユーザ情報の削除
+router.delete("/:id", async (req, res) => {
+  if (req.body.userId === req.params.id || req.body.isAdmin) {
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      res.status(200).json("削除が完了しました");
+    } catch (error) {
+      return res.status(500).json(err);
+    }
+  } else {
+    return res.status(403).json("アカウントが違うため削除できません");
+  }
+});
+
 // ユーザ情報の取得
 
 // router.get("/", (req, res) => {
